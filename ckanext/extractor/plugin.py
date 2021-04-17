@@ -27,9 +27,9 @@ from ckan import plugins
 from ckan.logic import NotFound
 from ckan.plugins import toolkit
 
-from .config import is_field_indexed, is_format_indexed
-from .logic import action, auth
-from . import model
+from ckanext.extractor.config import is_field_indexed, is_format_indexed
+from ckanext.extractor.logic import action, auth
+from ckanext.extractor import model
 
 
 log = logging.getLogger(__name__)

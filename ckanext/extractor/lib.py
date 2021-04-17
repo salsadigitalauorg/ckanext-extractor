@@ -25,7 +25,7 @@ import tempfile
 from ckan.plugins import PluginImplementations
 from .interfaces import IExtractorRequest
 
-from pylons import config
+from ckan.common import config
 import pysolr
 from requests import Request, Session
 

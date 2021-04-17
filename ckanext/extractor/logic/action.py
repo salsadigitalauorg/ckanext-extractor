@@ -23,7 +23,7 @@ import logging
 
 import ckan.plugins.toolkit as toolkit
 from ckan.logic import validate
-from pylons import config
+from ckan.common import config
 from sqlalchemy.orm.exc import NoResultFound
 
 from . import schema
