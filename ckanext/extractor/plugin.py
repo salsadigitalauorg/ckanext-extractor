@@ -30,6 +30,7 @@ from ckan.plugins import toolkit
 from ckanext.extractor.config import is_field_indexed, is_format_indexed
 from ckanext.extractor.logic import action, auth
 from ckanext.extractor import model
+from ckanext.extractor.cli import get_commands
 
 
 log = logging.getLogger(__name__)
@@ -57,6 +58,7 @@ class ExtractorPlugin(plugins.SingletonPlugin):
     plugins.implements(plugins.IActions)
     plugins.implements(plugins.IAuthFunctions)
     plugins.implements(plugins.IConfigurable)
+    plugins.implements(plugins.IClick)
 
     #
     # IConfigurer
@@ -164,4 +166,8 @@ class ExtractorPlugin(plugins.SingletonPlugin):
             'extractor_list': auth.extractor_list,
             'extractor_show': auth.extractor_show,
         }
+
+    # IClick
+    def get_commands(self):
+        return get_commands()
 
