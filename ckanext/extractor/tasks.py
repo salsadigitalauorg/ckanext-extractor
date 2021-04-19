@@ -79,7 +79,7 @@ def extract(ini_path, res_dict):
         extracted = download_and_extract(res_dict['url'])
         for plugin in PluginImplementations(IExtractorPostprocessor):
             plugin.extractor_after_extract(res_dict, extracted)
-        for key, value in extracted.iteritems():
+        for key, value in extracted.items():
             if not is_field_indexed(key):
                 continue
 

@@ -137,7 +137,7 @@ class ExtractorPlugin(plugins.SingletonPlugin):
                 metadata = get_action('extractor_show')({}, resource)
             except NotFound:
                 continue
-            for key, value in metadata['meta'].iteritems():
+            for key, value in metadata['meta'].items():
                 if is_field_indexed(key):
                     field = SOLR_FIELD.format(id=resource['id'], key=key)
                     pkg_dict[field] = value

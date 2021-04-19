@@ -49,7 +49,7 @@ def download_and_extract(resource_url):
         f.seek(0)
         data = pysolr.Solr(config['solr_url']).extract(f, extractFormat='text')
     data['metadata']['fulltext'] = data['contents']
-    return dict(clean_metadatum(*x) for x in data['metadata'].iteritems())
+    return dict(clean_metadatum(*x) for x in data['metadata'].items())
 
 
 def clean_metadatum(key, value):

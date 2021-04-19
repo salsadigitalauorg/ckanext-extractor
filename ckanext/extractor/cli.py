@@ -60,13 +60,16 @@ def delete():
 @extractor.command()
 @click.option(u'-f', u'--force', help=u'Force extraction', is_flag=True)
 @click.option(u'-a', u'--all', help=u'Extract all', is_flag=True)
-@click.argument(u'resource_ids', required=False)
+@click.argument(u'resource_ids', required=False, nargs=-1)
 @click.pass_context
 def extract(ctx,force, all, resource_ids):
     log.info("Extraction started ...")
     ids = []
     if all:
         ids.append('all')
+    else:
+        for id in resource_ids:
+            ids.append(id)
     site_user = tk.get_action(u'get_site_user')({u'ignore_auth': True}, {})
     context = {u'user': site_user[u'name'], u'ignore_auth': True}
     extract = tk.get_action('extractor_extract')
