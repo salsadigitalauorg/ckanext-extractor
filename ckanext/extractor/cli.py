@@ -5,7 +5,7 @@ import ckan.model as model
 import ckan.plugins.toolkit as tk
 import logging
 
-import ckanext.extractor.model as model
+import ckanext.extractor.model as extractor_model
 
 log = logging.getLogger(__name__)
 
@@ -15,7 +15,7 @@ def get_commands():
         extractor
     ]
 
-def _get_ids(self, only_with_metadata=False):
+def _get_ids(ids, only_with_metadata=False):
     """
     Get list of resource IDs from command line arguments.
 
@@ -25,16 +25,16 @@ def _get_ids(self, only_with_metadata=False):
     IDs of resources which have metadata are returned.
     """
 
-    if len(self.args) < 1:
+    if len(ids) < 1:
         tk.error_shout('Missing argument. Specify one or more resource IDs '
                 + 'or "all".')
-    if len(self.args) == 1 and self.args[0].lower() == 'all':
+    if len(ids) == 1 and ids[0].lower() == 'all':
         if only_with_metadata:
             return sorted(tk.get_action('extractor_list')({}, {}))
         else:
             return sorted(r.id for r in model.Resource.active())
     else:
-        return self.args[:]
+        return ids[:]
 
 
 def _compress(s, n=50):
@@ -58,13 +58,21 @@ def delete():
 
 
 @extractor.command()
-@click.option(u'-f', u'--force', help=u'Force extraction', default=False)
-def extract(force):
+@click.option(u'-f', u'--force', help=u'Force extraction', is_flag=True)
+@click.option(u'-a', u'--all', help=u'Extract all', is_flag=True)
+@click.argument(u'resource_ids', required=False)
+@click.pass_context
+def extract(ctx,force, all, resource_ids):
     log.info("Extraction started ...")
+    ids = []
+    if all:
+        ids.append('all')
+    site_user = tk.get_action(u'get_site_user')({u'ignore_auth': True}, {})
+    context = {u'user': site_user[u'name'], u'ignore_auth': True}
     extract = tk.get_action('extractor_extract')
-    for id in _get_ids():
+    for id in _get_ids(ids):
         print(id + ': ', end='')
-        result = extract({}, {'id': id, 'force': force})
+        result = extract(context, {'id': id, 'force': force})
         status = result['status']
         if result['task_id']:
             status += ' (task {})'.format(result['task_id'])
@@ -74,7 +82,7 @@ def extract(force):
 @extractor.command()
 def init():
     log.info("Creating tables")
-    model.create_tables()
+    extractor_model.create_tables()
 
 
 @extractor.command()
