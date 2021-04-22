@@ -76,22 +76,22 @@ def get(setting):
 
 
 # # Adapted from ckanext-archiver
-# def _register_translator():
-#     """
-#     Register a translator in this thread.
-#     """
-#     global registry
-#     try:
-#         registry
-#     except NameError:
-#         registry = Registry()
-#     registry.prepare()
-#     global translator_obj
-#     try:
-#         translator_obj
-#     except NameError:
-#         translator_obj = MockTranslator()
-#     registry.register(translator, translator_obj)
+def _register_translator():
+    """
+    Register a translator in this thread.
+    """
+    global registry
+    try:
+        registry
+    except NameError:
+        registry = Registry()
+    registry.prepare()
+    global translator_obj
+    try:
+        translator_obj
+    except NameError:
+        translator_obj = MockTranslator()
+    registry.register(translator, translator_obj)
 
 
 def _any_match(s, patterns):

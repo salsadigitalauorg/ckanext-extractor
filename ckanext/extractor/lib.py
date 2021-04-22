@@ -23,7 +23,7 @@ import datetime
 import tempfile
 
 from ckan.plugins import PluginImplementations
-from .interfaces import IExtractorRequest
+from ckanext.extractor.interfaces import IExtractorRequest
 
 from ckan.common import config
 import pysolr
